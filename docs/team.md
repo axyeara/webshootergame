@@ -5,3 +5,4 @@ assadFC team members:
 3. Sanjar Kairosh (kairoshs)
 4. Illya Assad (assadill)
 5. Jarod Legault (legaul30)
+6. Alexander Pegg (peggalex)
