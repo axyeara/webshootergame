@@ -27,3 +27,5 @@ PRODUCT BACKLOG
 
 13. As a competitive user, I want the option to play as a guest rather than creating an account.
 
+14. As a casual or competitive user, I want to be able to create and control a character. I want the character to have suficient mechanics to make the play enjoyable.
+
