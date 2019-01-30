@@ -20,4 +20,6 @@
 
 10) Given choosing a character in the game, the mechanics of the characters should vary and be interesting and distinguishable.
 
+11) Given registering an account, then I will be able to maintain scores and details about the account and build an interesting user experience.
+
 
