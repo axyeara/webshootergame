@@ -8,4 +8,8 @@
 
 4) Given a character to play, the game will then have interesting weapons and upgrades to collect along the way when passing levels.
 
-5) 
+5) Given the game stores scores, then I will have a ranking table that will be visually appealing and easy to interpret.
+
+6) Given the experience of playing the game in multiplayer, then I will have a chat that does not interfer with the graphics of the game.
+
+
