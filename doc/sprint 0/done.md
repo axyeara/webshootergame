@@ -14,4 +14,6 @@
 
 7) Given that I don't want to register as a user, then I will have the option to play as a guest and that experience will be seamless.
 
-8)
+8) Given the game experience, then I will be able to switch on and off the music, and select the type of music to enhance the atmosphere of the game.
+
+9) 
