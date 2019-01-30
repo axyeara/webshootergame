@@ -12,4 +12,6 @@
 
 6) Given the experience of playing the game in multiplayer, then I will have a chat that does not interfer with the graphics of the game.
 
+7) Given that I don't want to register as a user, then I will have the option to play as a guest and that experience will be seamless.
 
+8)
