@@ -18,4 +18,6 @@
 
 9) Given the multiplayer experience, then I will be easily able to choose how many players to play against. 
 
-10) 
+10) Given choosing a character in the game, the mechanics of the characters should vary and be interesting and distinguishable.
+
+
