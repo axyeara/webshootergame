@@ -16,4 +16,6 @@
 
 8) Given the game experience, then I will be able to switch on and off the music, and select the type of music to enhance the atmosphere of the game.
 
-9) 
+9) Given the multiplayer experience, then I will be easily able to choose how many players to play against. 
+
+10) 
