@@ -116,4 +116,3 @@ criteria of satisfaction: must be able to see a crosshair at mouse point after i
 
 
 
-shooting with weapons or jumping.
