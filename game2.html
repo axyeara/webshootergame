@@ -4,23 +4,23 @@
     <meta charset="UTF-8">
     <title>First game</title>
     <style>
-        #myCanvas {
-            background: black;
-            display: block; /* not sure why I need this */
-            margin: 0 auto;
-        }
         * {
             padding: 0;
             margin: 0;
         }
+        body {
+            overflow: hidden;
+        }
+        canvas {
+            background: black;
+            overflow: hidden;
+            cursor: url(crosshair32.png) 16 16, auto;
+        }
     </style>
 </head>
 <body id="body">
-<canvas id="myCanvas" width="994" height="680" style="background-image: url('http://localhost:8888/cloudbackground.jpg')"></canvas>
-<script type="module" src = "http://localhost:8888/Dependencies/StateMachine.js"></script>
-<script type="module" src = "http://localhost:8888/Dependencies/States/PlayState.js"></script>
-<script type="module" src="http://localhost:8888/Dependencies/Classes/Player.js"></script>
-<script type="module" src="http://localhost:8888/newmain.js"></script> <!-- sources the main.js file. had to put this after the canvas tag
+<canvas id="myCanvas" width="640" height="480" style="background-image: url('cloudbackground.jpg'); width: 640px;height: 480px;"></canvas>
+<script type="module" src="newmain.js"></script> <!-- sources the main.js file. had to put this after the canvas tag
 otherwise it wouldn't run.-->
 </body>
 </html>
