@@ -5,13 +5,15 @@
 import PlayState from "./Dependencies/States/PlayState.js";
 import StateMachine from "./Dependencies/StateMachine.js";
 import Player from "./Dependencies/Classes/Player.js";
+import Block from "./Dependencies/Classes/Block.js";
+import Level from "./Dependencies/Classes/Level.js";
 
 
 /*setting up the canvas */
 let canvas = document.getElementById("myCanvas");
 let ctx = canvas.getContext("2d");
-let background = new Image();
-background.src = "cloudbackground.jpg";
+// let background = new Image();
+// background.src = "cloudbackground.jpg";
 
 
 document.addEventListener("keydown", keyDownHandler, false);
@@ -26,22 +28,42 @@ let keyboardKeys = {
 
 
 
-
 let stateMachine = new StateMachine(
     {
         "play": new PlayState(ctx, canvas)
     }
 );
 
+let simpleLevelPlan = `
+    ................
+    ................
+    ####........####
+    ................
+    ................
+    ......####......
+    ................
+    ................
+    ..####....####..
+    ................
+    @...............
+    ################`;
+
+let level = new Level(canvas);
+let ret = level.parseMap(simpleLevelPlan);
+let player_x = ret[0];
+let player_y = ret[1];
+let blocks = ret[2];
+blocks = blocks.map(x => new Block(ctx, canvas, 'floor.png', x[0], x[1]));
+
 stateMachine.change("play", {
-    "player" : new Player(ctx, canvas)
+    "blocks" : blocks,
+    "player" : new Player(ctx, canvas, player_x, player_y, simpleLevelPlan.trim().split('\n').map(x => x.trim()))
 });
 
 
 function draw() {
     ctx.clearRect(0,0,canvas.width, canvas.height);
     stateMachine.draw();
-
 }
 
 function update() {
@@ -85,11 +107,11 @@ function keyUpHandler(e) {
 // Initializes the game loop
 
 setInterval(function () {
-    draw();
     update();
 }, 1); // set "FPS"
 
-
-
+setInterval(function () {
+    draw();
+}, 1000/60);
 
 
