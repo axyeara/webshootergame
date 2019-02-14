@@ -23,6 +23,6 @@ The purpose of this release is to first determine the software design and implem
 
 4. However, the user stories of highest priority (those that have to do with basic functionalities) were reconsidered and one was broken down in to parts. For example, the movement, jumping and implementation of crosshair were made into separate parts. We also considered adding user story for creation of distinct elements of the stage.
 
-5.Team communicated well. Some members do not have much experience with the technology used, so there was some delay in work. As time passes, there will be higher productivity.
+5. Team communicated well. Some members do not have much experience with the technology used, so there was some delay in work. As time passes, there will be higher productivity.
 
 
