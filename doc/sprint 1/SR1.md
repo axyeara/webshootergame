@@ -23,7 +23,11 @@ We were able to lay out a foundation of our code and complete our initial user s
 
 The main topics of discussion where the scope of the gameplay and its internal details. We decided that will work on making Monster, Gun and Stage classes. More specifically, we also wanted to add and finish the singleplayer mode by creating health bars for the players, missile/bullet trajectory physics and collision detection of missiles/bullets with Player/Monster objects. After concluding the basic functionalities of the singleplayer mode, we will next work on animations, sound effects and music to make the game more appealling. We will then continue by creating the different states of the game (Menu, Settings, Controls) to state those transitions. There is also a possibility that we would simultaneously work on the server implementation as well.
 
+# System Design:
+
+We have extensively reviewed our system design document and were initially having doubts on which framework and language we would use for the server-side implementation of the game. The other option was to use the Go programming language as one of our team members already had experience with this. We finally decided, however, to keep using Node.js framework (Javascript) for server-side code as it is also used in front-end code. Therefore, there are no significant changes made to the system design document.
+
 
 # Meeting Conclusion:
 
-We all managed to meet to discuss our failures, upcoming work and scope of our game successfully. We concluded that we need to be more productive, work on basic functionalities of the game first and then work on other states of the game as well as server implementation.
+We all managed to meet to discuss our failures, upcoming work and scope of our game successfully. We concluded that we need to be more productive, work on basic functionalities of the game first and then work on other states of the game as well as server implementation. There were no changes done to the system design document
