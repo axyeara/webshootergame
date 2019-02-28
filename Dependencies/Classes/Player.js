@@ -9,14 +9,6 @@ class Point{
         this.x = x;
         this.y = y;
     }
-
-    x(){
-        return this.x;
-    }
-
-    y(){
-        return this.y;
-    }
 }
 
 class Shot{
@@ -26,7 +18,6 @@ class Shot{
         this.currPos = null;
         this.speed = speed;
         this.angle = this.getTanAngle(startPoint,endPoint);
-        console.log(this.angle);
     }
 
     getTanAngle(startPoint,endPoint){
@@ -105,18 +96,13 @@ function Player(ctx, canvas, x, y, levelMap) {
             if (inWindow(shotPos)){
                 ctx.translate(shotPos.x,shotPos.y)
                 ctx.rotate(shot.angle);
+                //rotate bullet image
                 ctx.drawImage(bullet,-(bullet.width/2),-(bullet.width/2));
                 ctx.rotate(-shot.angle);
                 ctx.translate(-shotPos.x,-shotPos.y);
             } else {
                 let index = shots.indexOf(shot);
-                let length = shots.length;
                 shots.splice(index,1);
-                if (shots.length<length){
-                    console.log("smaller");
-                } else {
-                    console.log("failure to remove");
-                }
                 // remove the shot if it has reached its dest
             }
         }
