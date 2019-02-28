@@ -85,7 +85,6 @@ function Player(canvas, x, y, levelMap) {
 
         }
 
-
         if (levelMap[Math.min(Math.floor(((y + height + 1)/40)),
             Math.floor((canvas.height)/40) - 1)][Math.floor((x/40))] == '#' ||
                  levelMap[Math.min(Math.floor(((y + height + 1)/40)),
@@ -131,6 +130,10 @@ function Player(canvas, x, y, levelMap) {
         if (dy < 20){
             dy += 0.05;
         }
+
+        
+
+
     }
 
     return Object.freeze({

@@ -4,6 +4,7 @@ function Level(canvas) {
     var width = 0;
     var blocks = [];
     var blockSize = 0;
+    var monsters = [];
 
     function parseMap(levelMap) {
         let rows = levelMap.trim().split("\n").map(x => x.trim());
@@ -11,6 +12,7 @@ function Level(canvas) {
         width = rows[0].length;
         blockSize = canvas.width/width;
         blocks = [];
+        monsters = [];
         var player_x = 0;
         var player_y = 0;
 
@@ -21,6 +23,9 @@ function Level(canvas) {
                 if (rows[i][j] == '#') {
                     blocks.push([j*blockSize,i*blockSize]);
                 }
+                else if (rows[i][j] == '!') {
+                    monsters.push([j*blockSize,(i+1)*blockSize]);
+                }
                 else if (rows[i][j] == '@') {
                     player_x = j*blockSize;
                     player_y = (i+1)*blockSize;
@@ -28,7 +33,7 @@ function Level(canvas) {
             }
         }
 
-        return [player_x, player_y, blocks];
+        return [player_x, player_y, blocks, monsters];
     }
 
     return Object.freeze({
