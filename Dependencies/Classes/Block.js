@@ -15,7 +15,7 @@
 // @...............
 // ################`;
 
-function Block(ctx, canvas, imageUrl, x, y) {
+function Block(canvas, imageUrl, x, y) {
     var image = new Image();
     image.src = imageUrl;
     var width = 0;
@@ -26,7 +26,7 @@ function Block(ctx, canvas, imageUrl, x, y) {
         height = this.naturalHeight;
     }
 
-    function draw() {
+    function draw(ctx) {
         ctx.drawImage(image, x, y);
     }
 

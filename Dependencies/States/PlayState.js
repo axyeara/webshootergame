@@ -17,9 +17,9 @@ function PlayState(ctx, canvas) {
     this.draw = function() {
         var i;
         for (i = 0; i < this.blocks.length; i++) {
-            this.blocks[i].draw();
+            this.blocks[i].draw(ctx);
         }
-        this.player.draw();
+        this.player.draw(ctx);
     }
 }
 
