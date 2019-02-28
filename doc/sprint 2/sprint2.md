@@ -30,6 +30,12 @@ Member(s): Alexander Pegg
 Estimate Hours: 0.5
 Actual: 0.5
 
+3. User Story: Add Monsters
+Task: Allow user to play against monsters in single player mode. Monster would move around and interact with their environment.
+Members(s): Jarod Legault and Shuyi Dong
+Estimate Hours: 4
+Actual: 5
+
 NOTE: Please note that a significant amount of time went first into the implementation of inheritance design in our already existing state machines.
 
 
