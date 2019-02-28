@@ -18,6 +18,9 @@ let ctx = canvas.getContext("2d");
 
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
+canvas.addEventListener("mousedown", onMouseClick, false);
+canvas.addEventListener("mousemove", onMouseClick, false);
+canvas.addEventListener("mouseup", onMouseUnClick, false);
 //document.addEventListener("keypress", keyPressHandler, false);
 
 let keyboardKeys = {
@@ -62,11 +65,11 @@ let ret = level.parseMap(simpleLevelPlan);
 let player_x = ret[0];
 let player_y = ret[1];
 let blocks = ret[2];
-blocks = blocks.map(x => new Block(ctx, canvas, 'floor.png', x[0], x[1]));
+blocks = blocks.map(x => new Block(canvas, 'floor.png', x[0], x[1]));
 
 stateMachine.change("play", {
     "blocks" : blocks,
-    "player" : new Player(ctx, canvas, player_x, player_y, simpleLevelPlan.trim().split('\n').map(x => x.trim()))
+    "player" : new Player(canvas, player_x, player_y, simpleLevelPlan.trim().split('\n').map(x => x.trim()))
 });
 
 
@@ -107,6 +110,22 @@ function keyUpHandler(e) {
     }
 }
 
+function onMouseClick(e){
+    if(e.buttons != 0){
+        keyboardKeys["mouse"]=e;
+    }else{
+        onMouseUnClick();
+    }
+    // let endX = e.clientX;
+    // let endY = e.clientY;
+    // let startX = x+(image.width/2);
+    // let startY = y+(image.width/2);
+    // shots.push(new Shot(new Point(startX,startY),
+    //     (new Date()).getTime(),new Point(endX,endY),speed))
+}
+function onMouseUnClick(){
+    keyboardKeys["mouse"]=null;
+}
 /*function keyPressHandler(e) {
     if (e.key == "Space") {
         keyboardKeys["space"] = true;

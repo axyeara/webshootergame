@@ -4,61 +4,11 @@
     - AY
  */
 
-class Point{
-    constructor(x,y){
-        this.x = x;
-        this.y = y;
-    }
-}
+import {Shot,Point} from "./Shot.js";
 
-class Shot{
-    constructor(startPoint,startTime,endPoint, speed){
-        this.startPoint = startPoint;
-        this.startTime = startTime;
-        this.currPos = null;
-        this.speed = speed;
-        this.angle = this.getTanAngle(startPoint,endPoint);
-    }
-
-    getTanAngle(startPoint,endPoint){
-        let adj = endPoint.x - startPoint.x;
-        let oppo = endPoint.y - startPoint.y;
-        let angle = Math.atan(oppo/adj);
-        if (angle<0){
-            angle += 2*Math.PI;
-        }
-        if (adj<0){
-            // the positive values for
-            // tangent are on opposite sides
-            // of the unit circle
-            angle+=Math.PI;
-            // remember, arctan (taninv)
-            // has a codomain of [-pi/2,pi/2]
-            // but we must account for a full circle
-        }
-        angle = angle%(2*Math.PI);
-        return angle;
-
-    }
-
-    pos(time){
-        let elapsed = time-this.startTime; // time in ms
-        let hyp = elapsed*this.speed;
-        let dx = hyp*Math.cos(this.angle);
-        let dy = hyp*Math.sin(this.angle);
-        this.currPos = new Point(this.startPoint.x+dx, this.startPoint.y+dy);
-        return this.currPos;
-
-    }
-
-
-}
-
-function Player(ctx, canvas, x, y, levelMap) {
+function Player(canvas, x, y, levelMap) {
     var image = new Image();
     image.src = "./player.png";
-    let bullet = new Image();
-    bullet.src = "./bullet.png";
     // var y = canvas.height;
     // var x = 0;
     var width = 0;
@@ -66,20 +16,7 @@ function Player(ctx, canvas, x, y, levelMap) {
     var dx = 1;
     var dy = 0.05;
     var shots = [];
-    var speed = 0.5; // the speed of bullets per millisecond
-    canvas.addEventListener("click", onMouseClick, false);
-
-    function onMouseClick(e){
-        let endX = e.clientX;
-        let endY = e.clientY;
-        let startX = x+(image.width/2);
-        let startY = y+(image.width/2);
-        shots.push(new Shot(new Point(startX,startY),
-            (new Date()).getTime(),new Point(endX,endY),speed))
-
-
-
-    }
+    var shoot_cd = 200;
 
     image.onload = function() {
         width = this.naturalWidth;
@@ -87,25 +24,10 @@ function Player(ctx, canvas, x, y, levelMap) {
         y = y-height;
     }
 
-    var inWindow = (point) => { return (point.x>0 && point.y>0 && point.x<canvas.width && point.y<canvas.height); }
-
-    function draw() {
-        let time = (new Date()).getTime();
-        for (let shot of shots){
-            let shotPos = shot.pos(time);            
-            if (inWindow(shotPos)){
-                ctx.translate(shotPos.x,shotPos.y)
-                ctx.rotate(shot.angle);
-                //rotate bullet image
-                ctx.drawImage(bullet,-(bullet.width/2),-(bullet.width/2));
-                ctx.rotate(-shot.angle);
-                ctx.translate(-shotPos.x,-shotPos.y);
-            } else {
-                let index = shots.indexOf(shot);
-                shots.splice(index,1);
-                // remove the shot if it has reached its dest
-            }
-        }
+    function draw(ctx) {
+        shots.forEach((shot)=>{
+            shot.draw(ctx);
+        })
         ctx.drawImage(image, x, y);
     }
 
@@ -117,6 +39,19 @@ function Player(ctx, canvas, x, y, levelMap) {
         var i;
         var collision = false;
         
+        { // temporary place form bullet
+            shots = shots.filter((v)=>{ return v.update(params)});
+
+            if(shoot_cd<=0 && params["mouse"]){
+                let e = params["mouse"];
+                shots.push(new Shot(new Point(x+(image.width/2),y+(image.height/2)),
+                                    new Point(e.clientX,e.clientY),0.5));
+                shoot_cd = 100;
+            }else{
+                if (shoot_cd>0)
+                    shoot_cd -= 1;
+            }
+        }
         if (params["right"]) {
             var new_x = Math.min(Math.floor(((x + dx + width)/40)),
                 Math.floor((canvas.width - width)/40));
