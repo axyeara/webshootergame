@@ -1,38 +1,16 @@
 // 16w 12h at 40x40
 
-// @ = player, # = floor
-// let simpleLevelPlan = `
-// ................
-// ................
-// ####........####
-// ................
-// ................
-// ......####......
-// ................
-// ................
-// ..####....####..
-// ................
-// @...............
-// ################`;
+import Sprite from "./Sprite.js";
 
-function Block(canvas, imageUrl, x, y) {
-    var image = new Image();
-    image.src = imageUrl;
-    var width = 0;
-    var height = 0;
+class Block extends Sprite {
 
-    image.onload = function() {
-        width = this.naturalWidth;
-        height = this.naturalHeight;
+    constructor (canvas, x, y, imageUrl, rotation) {
+        super(canvas, x, y, imageUrl, rotation)
     }
 
-    function draw(ctx) {
-        ctx.drawImage(image, x, y);
+    draw(ctx) {
+        super.draw(ctx);
     }
-
-    return Object.freeze({
-        draw,
-    });
 }
 export default Block;
 

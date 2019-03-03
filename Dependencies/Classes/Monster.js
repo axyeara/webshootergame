@@ -3,93 +3,45 @@
 
     - AY
  */
+import Sprite from "./Sprite.js";
 
-function Monster(canvas, x, y, levelMap) {
-    var image = new Image();
-    var levelMap = levelMap;
-    image.src = "./player.png";
-    var width = 0;
-    var height = 0;
-    var dx = 0.3;
-    var dy = 0.05;
+class Monster extends Sprite {
 
-    image.onload = function() {
-        width = this.naturalWidth;
-        height = this.naturalHeight;
-        y = y-height;
+    constructor(canvas, x, y, imageUrl, rotation) {
+        super(canvas, x, y-0.1, imageUrl, rotation);
+        this.onFloor = 1;
+        this.dx = 1;
+        this.dy = 0.5;
     }
 
-
-    function draw(ctx) {
-        ctx.drawImage(image, x, y);
+    draw(ctx) {
+        super.draw(ctx);
     }
 
-    function update(){
-        var y_t = Math.max(Math.floor(((y+1)/40)),0);
-        var y_b = Math.floor(((y+height-1)/40));
-        var y_diff = y_b - y_t;
-        var i;
-        var collision = false;
-        
-        // var new_x = (x + dx)/40;
-        // for (i = 0; i <= y_diff; i++) {
-        //     if (levelMap[y_t+i][new_x] == '#') {
-        //         collision = true;
-        //         break;
-        //     }
-        // }
-        // if (!collision) {
-        //     x = Math.max(x - dx, 0);
-        // }
-        x = x - dx;
-        // if (dx > 0) {
-        //     dx -= 0.2;
-        // }
-        // else {
-        //     dx += 0.2;
-        // }
-
-        var new_y_t = Math.max(Math.floor(((y + dy)/40)), 0);
-        var new_y_b = Math.min(Math.floor(((y + dy + height)/40)),
-            Math.floor((canvas.height)/40) - 1);
-        var x_l = Math.floor((x/40));
-        var x_r = Math.floor(((x+width)/40));
-        
-        var x_diff = x_r - x_l;
-        var collision_b = false;
-        var collision_t = false;
-        for (i = 0; i <= x_diff; i++) {
-            if (levelMap[new_y_b][x_l+i] == '#' ||
-                 Math.floor(((y + dy + height)/40)) > Math.floor((canvas.height)/40) - 1) {
-
-                collision_b = true;
-                break;
-            }
-            if (levelMap[new_y_t][x_l+i] == '#' || Math.floor(((y + dy)/40)) < 0) {
-                collision_t = true;
-                break;
-            }
+    update(params){
+        if (!super.update(params)) {
+            return;
         }
 
-        if (collision_b) {
-            dy = 0.05;
+        this.x = Math.min(Math.max(this.x + this.dx, 0),this.canvas.width);
+        let touching = this.getTouching();
+        if (touching.length) {
+            this.x = this.x - this.dx;
+            this.dx = -this.dx;
         }
-        else if (collision_t) {
-            dy /= 2;
+
+        this.y = this.y + this.dy;
+        let tmpx = this.x;
+        this.x = this.x + this.dx*40;
+        touching = this.getTouching();
+        if (!touching.length) {
+            this.dx = -this.dx;
         }
-        else {
-            y = Math.min(y + dy, canvas.height - height);
-            y = Math.max(y, 0);
-        }
-        if (dy < 20){
-            dy += 0.05;
-        }
+        this.x = tmpx;
+        this.y = this.y - this.dy;
+
+        return true;
     }
-
-    return Object.freeze({
-        draw,
-        update
-    });
 }
 export default Monster;
 

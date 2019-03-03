@@ -1,3 +1,19 @@
+// @ = player, # = floor
+// let simpleLevelPlan = `
+// ................
+// ................
+// ####........####
+// ................
+// ................
+// ......####......
+// ................
+// ................
+// ..####....####..
+// ................
+// @...............
+// ################`;
+
+
 function Level(canvas) {
 
     var height = 0;
@@ -5,6 +21,7 @@ function Level(canvas) {
     var blocks = [];
     var blockSize = 0;
     var monsters = [];
+    var players = [];
 
     function parseMap(levelMap) {
         let rows = levelMap.trim().split("\n").map(x => x.trim());
@@ -13,6 +30,7 @@ function Level(canvas) {
         blockSize = canvas.width/width;
         blocks = [];
         monsters = [];
+        players = [];
         var player_x = 0;
         var player_y = 0;
 
@@ -21,19 +39,18 @@ function Level(canvas) {
         for (i = 0; i < height; i++) {
             for (j = 0; j < width; j++) {
                 if (rows[i][j] == '#') {
-                    blocks.push([j*blockSize,i*blockSize]);
+                    blocks.push([j*blockSize,(i+1)*blockSize]);
                 }
                 else if (rows[i][j] == '!') {
                     monsters.push([j*blockSize,(i+1)*blockSize]);
                 }
                 else if (rows[i][j] == '@') {
-                    player_x = j*blockSize;
-                    player_y = (i+1)*blockSize;
+                    players.push([j*blockSize,(i+1)*blockSize]);
                 }
             }
         }
 
-        return [player_x, player_y, blocks, monsters];
+        return [players, blocks, monsters];
     }
 
     return Object.freeze({
