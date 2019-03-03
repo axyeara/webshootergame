@@ -8,6 +8,7 @@ import Player from "./Dependencies/Classes/Player.js";
 import Monster from "./Dependencies/Classes/Monster.js";
 import Block from "./Dependencies/Classes/Block.js";
 import Level from "./Dependencies/Classes/Level.js";
+import CollisionChecker from "./CollisionChecker.js";
 
 
 /*setting up the canvas */
@@ -19,9 +20,9 @@ let ctx = canvas.getContext("2d");
 
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
-canvas.addEventListener("mousedown", onMouseClick, false);
-canvas.addEventListener("mousemove", onMouseClick, false);
-canvas.addEventListener("mouseup", onMouseUnClick, false);
+document.addEventListener("mousedown", onMouseClick, false);
+document.addEventListener("mousemove", onMouseClick, false);
+document.addEventListener("mouseup", onMouseUnClick, false);
 //document.addEventListener("keypress", keyPressHandler, false);
 
 let keyboardKeys = {
@@ -30,11 +31,12 @@ let keyboardKeys = {
     "space": false,
 };
 
-
+let playState = new PlayState(ctx, canvas);
+new CollisionChecker(canvas, playState);
 
 let stateMachine = new StateMachine(
     {
-        "play": new PlayState(ctx, canvas)
+        "play": playState
     }
 );
 
@@ -46,36 +48,23 @@ function httpGet(theUrl)
     return xmlHttp.responseText;
 }
 
-let simpleLevelPlan = httpGet("./Maps/map1");
-// `
-//     ................
-//     ................
-//     ####........####
-//     ................
-//     ........!.......
-//     ......####......
-//     ................
-//     ...........!....
-//     ..####....####..
-//     ................
-//     @...............
-//     ################`;
+let simpleLevelPlan = httpGet("./Maps/map2");
 
 let level = new Level(canvas);
 let ret = level.parseMap(simpleLevelPlan);
-let player_x = ret[0];
-let player_y = ret[1];
-let blocks = ret[2];
-blocks = blocks.map(x => new Block(canvas, 'floor.png', x[0], x[1]));
+let players = ret[0];
+players = players.map(x => new Player(canvas, x[0], x[1], 'player.png', 0));
+let blocks = ret[1];
+blocks = blocks.map(x => new Block(canvas, x[0], x[1], 'floor.png', 0));
+let monsters = ret[2];
+monsters = monsters.map(x => new Monster(canvas, x[0], x[1], 'monster.png', 0));
+let sprites = blocks.concat(monsters).concat(players);
 
-let monsters = ret[3];
-monsters = monsters.map(x => new Monster(canvas, x[0], x[1], simpleLevelPlan.trim().split('\n').map(x => x.trim())));
+//console.log(sprites);
+
 stateMachine.change("play", {
-    "monsters" : monsters,
-    "blocks" : blocks,
-    "player" : new Player(canvas, player_x, player_y, simpleLevelPlan.trim().split('\n').map(x => x.trim()))
+    "sprites": sprites
 });
-
 
 function draw() {
     ctx.clearRect(0,0,canvas.width, canvas.height);

@@ -5,31 +5,48 @@ This is the PlayState "class". This would normally implement a BaseState interfa
 apparently you cannot implement an interface in JavaScript right off the bat.
  */
 
-function PlayState(ctx, canvas) {
+var playState = null;
 
-    this.enter = function(params) {
-        this.monsters = params["monsters"];
-        this.blocks = params["blocks"];
-        this.player = params["player"];
+class PlayState {
+
+    constructor(ctx, canvas) {
+        this.ctx = ctx;
+        this.canvas = canvas;
+        playState = this;
     }
-    this.update = function(params) {
+
+    enter(params) {
+        this.sprites = params["sprites"];
+    }
+    
+    update(params) {
+        this.sprites.forEach(sprite => {
+            sprite.update(params);
+        });
+
+        this.sprites = this.sprites.filter((s) => {return s.hp > 0});
+    }
+
+    draw() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         var i;
-        for (i = 0; i < this.monsters.length; i++) {
-            this.monsters[i].update();
+        for (i = 0; i < this.sprites.length; i++) {
+            this.sprites[i].draw(this.ctx);
         }
-        this.player.update(params);
     }
-    this.draw = function() {
-        var i;
-        for (i = 0; i < this.blocks.length; i++) {
-            this.blocks[i].draw(ctx);
-        }
-        for (i = 0; i < this.monsters.length; i++) {
-            this.monsters[i].draw(ctx);
-        }
-        this.player.draw(ctx);
+
+    removeSprite(sprite) {
+        this.sprites = this.sprites.filter((s) => { return s != sprite})
     }
+    
+    addSprite(sprite) {
+        this.sprites.push(sprite);
+    }
+
+    
 }
-
-
 export default PlayState;
+
+export function addSprite(sprite) {
+    playState.addSprite(sprite);
+}

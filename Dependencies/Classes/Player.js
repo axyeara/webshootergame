@@ -1,145 +1,89 @@
-    /*
-    Player class
-
-    - AY
- */
 
 import {Shot,Point} from "./Shot.js";
+import Sprite from "./Sprite.js";
 
-function Player(canvas, x, y, levelMap) {
-    var image = new Image();
-    image.src = "./player.png";
-    // var y = canvas.height;
-    // var x = 0;
-    var width = 0;
-    var height = 0;
-    var dx = 1;
-    var dy = 0.05;
-    var shots = [];
-    var shoot_cd = 200;
+class Player extends Sprite {
 
-    image.onload = function() {
-        width = this.naturalWidth;
-        height = this.naturalHeight;
-        y = y-height;
+    constructor(canvas, x, y, imageUrl, rotation) {
+        super(canvas, x, y-1, imageUrl, rotation);
+        this.onFloor = 1;
+        this.shoot_cd = 0;
     }
 
-    function draw(ctx) {
-        shots.forEach((shot)=>{
-            shot.draw(ctx);
-        })
-        ctx.drawImage(image, x, y);
+    draw(ctx) {
+        super.draw(ctx);
     }
 
-    function update(params){
+    update(params){
+        if (!super.update(params)) {
+            return;
+        }
         let keys = params;
-        var y_t = Math.max(Math.floor(((y+1)/40)),0);
-        var y_b = Math.floor(((y+height-1)/40));
-        var y_diff = y_b - y_t;
-        var i;
-        var collision = false;
+
+        if(this.shoot_cd<=0 && params["mouse"]){
+            let e = params["mouse"];
+            let coords = getCursorPosition(this.canvas, e);
+            let shot = new Shot(this.canvas, new Point(this.x+(this.image.width/2),this.y+(this.image.height/2)),
+                                new Point(coords.x,coords.y),'bullet.png', 2, 1, this);
+            shot.ignoreCollision.push(this);
+            this.ignoreCollision.push(shot); // removing this line makes it possible to jump on own bullets
+            this.shoot_cd = 100;
+            this.addSprite(shot);
+        }else{
+            if (this.shoot_cd>0)
+                this.shoot_cd -= 1;
+        }
         
-        { // temporary place form bullet
-            shots = shots.filter((v)=>{ return v.update(params)});
-
-            if(shoot_cd<=0 && params["mouse"]){
-                let e = params["mouse"];
-                shots.push(new Shot(new Point(x+(image.width/2),y+(image.height/2)),
-                                    new Point(e.clientX,e.clientY),0.5));
-                shoot_cd = 100;
-            }else{
-                if (shoot_cd>0)
-                    shoot_cd -= 1;
-            }
+        if (keys["right"]) {
+            this.dx = 1;
         }
-        if (params["right"]) {
-            var new_x = Math.min(Math.floor(((x + dx + width)/40)),
-                Math.floor((canvas.width - width)/40));
-            
-            for (i = 0; i <= y_diff; i++) { 
-            // in case model is bigger than a block, check inside
-                if (levelMap[y_t+i][new_x] == '#') {
-                    collision = true;
-                    break;
-                }
-            }
-
-            if (!collision) {
-                x = Math.min(x + dx, canvas.width - width);
-            }
-            
-        }
-        if (params["left"]) {
-            var new_x = Math.max(Math.floor(((x - dx)/40)), 0);
-
-            for (i = 0; i <= y_diff; i++) {
-                if (levelMap[y_t+i][new_x] == '#') {
-                    collision = true;
-                    break;
-                }
-            }
-
-            if (!collision) {
-                x = Math.max(x - dx, 0);
-            }
-
-        }
-
-        if (levelMap[Math.min(Math.floor(((y + height + 1)/40)),
-            Math.floor((canvas.height)/40) - 1)][Math.floor((x/40))] == '#' ||
-                 levelMap[Math.min(Math.floor(((y + height + 1)/40)),
-                Math.floor((canvas.height)/40) - 1)][Math.floor(((x+width)/40))] == '#') {
-            if (keys["space"]) {
-                if (dy >= -0.2)
-                    dy = -4;
-            }
-        }
-
-        var new_y_t = Math.max(Math.floor(((y + dy)/40)), 0);
-        var new_y_b = Math.min(Math.floor(((y + dy + height)/40)),
-            Math.floor((canvas.height)/40) - 1);
-        var x_l = Math.floor((x/40));
-        var x_r = Math.floor(((x+width)/40));
-        
-        var x_diff = x_r - x_l;
-        var collision_b = false;
-        var collision_t = false;
-        for (i = 0; i <= x_diff; i++) {
-            if (levelMap[new_y_b][x_l+i] == '#' ||
-                 Math.floor(((y + dy + height)/40)) > Math.floor((canvas.height)/40) - 1) {
-
-                collision_b = true;
-                break;
-            }
-            if (levelMap[new_y_t][x_l+i] == '#' || Math.floor(((y + dy)/40)) < 0) {
-                collision_t = true;
-                break;
-            }
-        }
-
-        if (collision_b) {
-            dy = 0.05;
-        }
-        else if (collision_t) {
-            dy /= 2;
+        else if (keys["left"]) {
+            this.dx = -1;
         }
         else {
-            y = Math.min(y + dy, canvas.height - height);
-            y = Math.max(y, 0);
-        }
-        if (dy < 20){
-            dy += 0.05;
+            this.dx = 0;
         }
 
-        
+        this.x = this.x + this.dx;
+        let touching = this.getTouching();
+        if (touching.length) {
+            this.x = this.x - this.dx;
+        }
 
+        if (keys["space"] && this.onFloor) {
+            this.dy = -4.2;
+        }
 
+        this.y = this.y + this.dy;
+        touching = this.getTouching();
+        if (touching.length) {
+            //console.log(touching);
+            this.y = this.y - this.dy;
+            if (this.dy <= 0) {
+                this.dy /= 2;
+            }
+            else if (this.dy > 0) {
+                this.dy = 0.05;
+                this.onFloor = 1;
+            }
+        }
+        else {
+            if (this.y == 0) {
+                this.dy /= 2;
+            }
+            this.onFloor = 0;
+        }
+        if (this.dy < 20){ // max gravity
+            this.dy += 0.05;
+        }
     }
 
-    return Object.freeze({
-        draw,
-        update
-    });
 }
 export default Player;
 
+function getCursorPosition(canvas, event) {
+    let scale = canvas.height/window.innerHeight;
+    let x = scale*event.clientX;
+    let y = scale*event.clientY;
+    return {x: x, y: y};
+}

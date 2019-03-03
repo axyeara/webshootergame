@@ -8,7 +8,8 @@
             padding: 0;
             margin: 0;
         }
-        body {
+        html, body {
+            height: 100%;
             overflow: hidden;
         }
         canvas {
@@ -18,8 +19,9 @@
         }
     </style>
 </head>
+<!--width="1280" height="960"-->
 <body id="body">
-<canvas id="myCanvas" width="640" height="480" style="background-image: url('cloudbackground.jpg'); width: 640px;height: 480px;"></canvas>
+<canvas id="myCanvas" width="1280" height="960" style="background-image: url('cloudbackground.jpg'); max-height: 100%; max-width: 100%; width: auto; height: auto;"></canvas>
 <script type="module" src="newmain.js"></script> <!-- sources the main.js file. had to put this after the canvas tag
 otherwise it wouldn't run.-->
 </body>
