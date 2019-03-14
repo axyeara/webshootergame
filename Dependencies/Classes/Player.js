@@ -8,10 +8,34 @@ class Player extends Sprite {
         super(canvas, x, y-1, imageUrl, rotation);
         this.onFloor = 1;
         this.shoot_cd = 0;
+        this.gunloaded = 0;
+        this.gun = new Image();
+        this.gun.src = 'ak-47.png';
+        this.gun.onload = () => {
+            this.gunloaded = 1;
+        };
+        this.gunrotation = 0;
+        this.hp = 15;
     }
 
     draw(ctx) {
         super.draw(ctx);
+
+        if (this.gunloaded) {
+            ctx.save();
+            ctx.translate(this.x+this.width/2,this.y+this.height/2);
+            ctx.rotate(this.gunrotation);
+            if (Math.abs(this.gunrotation) > 1.5) {
+                ctx.scale(1,-1);
+            }
+            ctx.drawImage(this.gun,0,0);
+            ctx.restore();
+        }
+
+        ctx.fillStyle = 'green';
+        for (var i = 0; i < this.hp; i++) {
+            ctx.fillRect(20*i, 20, 100, 50);
+        }
     }
 
     update(params){
@@ -19,6 +43,11 @@ class Player extends Sprite {
             return;
         }
         let keys = params;
+        if (params["mouseMove"]) {
+            let coord = getCursorPosition(this.canvas, params["mouseMove"]);
+            this.gunrotation = getTanAngle({x: this.x+this.width/2, y: this.y+this.height/2}, {x: coord.x, y: coord.y});
+        }
+
 
         if(this.shoot_cd<=0 && params["mouse"]){
             let e = params["mouse"];
@@ -47,7 +76,15 @@ class Player extends Sprite {
         this.x = this.x + this.dx;
         let touching = this.getTouching();
         if (touching.length) {
+            touching.forEach(sprite => {
+                if (sprite.constructor.name == "Monster") {
+                    this.dx = (this.dx)*20;
+                    this.dy = -1;
+                    this.hp -= 1;
+                }
+            });
             this.x = this.x - this.dx;
+            this.dx = this.dx/-3;
         }
 
         if (keys["space"] && this.onFloor) {
@@ -86,4 +123,11 @@ function getCursorPosition(canvas, event) {
     let x = scale*event.clientX;
     let y = scale*event.clientY;
     return {x: x, y: y};
+}
+
+function getTanAngle(startPoint,endPoint){
+    let adj = endPoint.x - startPoint.x;
+    let oppo = endPoint.y - startPoint.y;
+    let angle = Math.atan2(oppo,adj);
+    return angle;
 }

@@ -109,6 +109,7 @@ function onMouseClick(e){
     }else{
         onMouseUnClick();
     }
+    keyboardKeys["mouseMove"]=e;
     // let endX = e.clientX;
     // let endY = e.clientY;
     // let startX = x+(image.width/2);
