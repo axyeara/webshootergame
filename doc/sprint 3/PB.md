@@ -1,7 +1,7 @@
 PRODUCT BACKLOG
 ---------------
 
-NOTE ON UPDATE: The only update from the original PB.md is that we added a user story regarding the server implementation (#18).
+NOTE ON UPDATE: The only update from the original PB.md is that we added a user story regarding the server implementation (#18) and health bars (#19).
 
 priority scale: 1 to 10 (10 is highest priority)
 size scale: 1 to 10 (10 is highest size)
@@ -118,6 +118,11 @@ criteria of satisfaction: image but be able to accurately represent Prof. Dema.
 
 18. As a casual or competitive user, I want to be able to connect to the server.
 Priority: 7
-sie: 6
+size: 6
 criteria of satisfaction: must have working server code. If the client-side for connections with the server, the user should know conneciton has been initialized.
+
+19. As a casual or competitive user, I want to be able to see my player's and opponent's health bars.
+Priority: 3
+size: 3
+criteria of satisfaction: should be able to see a health bar over the player that should decrease in size indicating a player has lost health.
 

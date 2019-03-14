@@ -18,7 +18,13 @@
 
 A few user stories were selected/broken down from out original product backlog:
 
-1. User Story: Add Guns
+1. User Story: Add Weapons
+Task: Allow a user to use weapons in the game. These guns are individual objects that you can use/pick up on the stage.
+Member(s): Jarrod Legault
+Estimate hours: 10
+Actual: 5
+
+2. User Story: Add Health Bar
 Task: Allow a user to use weapons in the game. These guns are individual objects that you can use/pick up on the stage.
 Member(s): Jarrod Legault
 Estimate hours: 10
