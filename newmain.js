@@ -3,6 +3,7 @@
 
 
 import PlayState from "./Dependencies/States/PlayState.js";
+import MenuState from "./Dependencies/States/MenuState.js";
 import StateMachine from "./Dependencies/StateMachine.js";
 import Player from "./Dependencies/Classes/Player.js";
 import Monster from "./Dependencies/Classes/Monster.js";
@@ -12,7 +13,7 @@ import CollisionChecker from "./CollisionChecker.js";
 
 
 /*setting up the canvas */
-let canvas = document.getElementById("myCanvas");
+let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
 // let background = new Image();
 // background.src = "cloudbackground.jpg";
@@ -32,10 +33,12 @@ let keyboardKeys = {
 };
 
 let playState = new PlayState(ctx, canvas);
+let menuState = new MenuState(ctx, canvas);
 new CollisionChecker(canvas, playState);
 
 let stateMachine = new StateMachine(
     {
+        "menu": menuState,
         "play": playState
     }
 );
@@ -62,9 +65,8 @@ let sprites = blocks.concat(monsters).concat(players);
 
 //console.log(sprites);
 
-stateMachine.change("play", {
-    "sprites": sprites
-});
+stateMachine.change("menu", null);
+
 
 function draw() {
     ctx.clearRect(0,0,canvas.width, canvas.height);
@@ -125,6 +127,21 @@ function onMouseUnClick(){
         keyboardKeys["space"] = true;
     }
 }*/
+
+function startGame() {
+    stateMachine.change("play", {
+    "sprites": sprites
+    });
+    singleButton.disabled=true;
+    multiButton.disabled=true;
+    singleButton.style.visibility="hidden";
+    multiButton.style.visibility="hidden";
+}
+
+let singleButton = document.getElementById("singlebutton");
+let multiButton = document.getElementById("multibutton");
+singleButton.onclick = startGame;
+
 
 // Initializes the game loop
 

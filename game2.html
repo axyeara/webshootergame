@@ -11,17 +11,63 @@
         html, body {
             height: 100%;
             overflow: hidden;
+
         }
-        canvas {
-            background: black;
+        .canvas-container {
+            position: relative;
+            height: 100%;
+        }
+        #canvas {
+            background-color: #afeeee;
             overflow: hidden;
             cursor: url(crosshair32.png) 16 16, auto;
+            position: absolute;
+        }
+        #singlebutton {
+            position: absolute;
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 30px;
+            margin: 300px 400px;
+            cursor: url(crosshair32.png) 16 16, auto;
+        }
+        #multibutton {
+            position: absolute;
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 30px;
+            margin: 500px 400px;
+            cursor: url(crosshair32.png) 16 16, auto;
+        }
+
+        #singlebutton:hover {
+            background-color: red;
+        }
+        #multibutton:hover {
+            background-color: red;
         }
     </style>
 </head>
 <!--width="1280" height="960"-->
 <body id="body">
-<canvas id="myCanvas" width="1280" height="960" style="background-image: url('cloudbackground.jpg'); max-height: 100%; max-width: 100%; width: auto; height: auto;"></canvas>
+<div class="canvas-container">
+    <canvas id="canvas" width="1280" height="960" style="max-height: 100%; max-width: 100%; width: auto; height: auto;"></canvas>
+    <button id="singlebutton">SINGLE PLAYER</button>
+    <button id="multibutton">MULTI PLAYER</button>
+</div>
+
+
+
 <script type="module" src="newmain.js"></script> <!-- sources the main.js file. had to put this after the canvas tag
 otherwise it wouldn't run.-->
 </body>

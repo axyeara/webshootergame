@@ -12,6 +12,7 @@ class PlayState {
     constructor(ctx, canvas) {
         this.ctx = ctx;
         this.canvas = canvas;
+        this.canvas.style.backgroundImage = "url('cloudbackground.jpg')";
         playState = this;
     }
 
